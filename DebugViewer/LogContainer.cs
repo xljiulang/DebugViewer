@@ -10,8 +10,14 @@ namespace DebugViewer
     /// </summary>
     public class LogContainer
     {
+        /// <summary>
+        /// 日志同步加锁
+        /// </summary>
         private readonly object syncRoot = new object();
 
+        /// <summary>
+        /// 所有日志
+        /// </summary>
         private readonly List<DebugLog> logList = new List<DebugLog>();
 
         /// <summary>
