@@ -95,36 +95,20 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="#eee">
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="#eee">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="180"/>
-                <ColumnDefinition Width="260"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="24" Margin="10,7,0,5" Width="791">
+            <Button Name="btnProcess" Width="50" Height="24" Content="进程"  Focusable="False" Cursor="Hand" Margin="10 0 0 0"  />
+            <Label Content="表达式：" Margin="50 0 0 0" />
+            <TextBox Name="txtPattern" Width="180" Padding="0 4 0 0" />
+            <Button Name="btnFilter" Width="50" Height="24" Content="过滤"  Margin="10 0 0 0" Focusable="False" Cursor="Hand" />
+            <CheckBox x:Name="ckScroll" Content="滚动" Margin="50 5 0 0" Focusable="False" Cursor="Hand" />
+        </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                <Button Name="btnStart" Width="50" Height="24" Content="监视"  Focusable="False" Cursor="Hand"  />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
-                <Label Content="进程ID：" />
-                <TextBox Name="txtPid" Width="100" Padding="0 4 0 0" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"  >
-                <Label Content="表达式：" />
-                <TextBox Name="txtPattern" Width="180" Padding="0 4 0 0" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" >
-                <Button Name="btnFilter" Width="50" Height="24" Content="过滤"   Margin="10 0 0 0" Focusable="False" Cursor="Hand" />
-                <CheckBox Name="ckScroll" Content="滚动" Margin="50 5 0 0" Focusable="False" Cursor="Hand" />
-            </StackPanel>
-        </Grid>
         <DataGrid Name="dataGrid" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False"  CanUserSortColumns="False"  AlternationCount="2" Grid.Row="1" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="时间"  Width="160" Binding="{Binding Time}"/>

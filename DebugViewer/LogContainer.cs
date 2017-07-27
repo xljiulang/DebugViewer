@@ -26,7 +26,7 @@ namespace DebugViewer
         public int Length
         {
             get
-            {                
+            {
                 return this.logList.Count;
             }
         }
@@ -64,6 +64,23 @@ namespace DebugViewer
             lock (this.syncRoot)
             {
                 this.logList.Clear();
+            }
+        }
+
+        /// <summary>
+        /// 保留日志
+        /// </summary>
+        /// <param name="pids"></param>
+        public void Retain(IEnumerable<int> pids)
+        {
+            lock (this.syncRoot)
+            {
+                var retains = from l in this.logList
+                              join i in pids
+                              on l.Pid equals i
+                              select l;
+                this.logList.Clear();
+                this.logList.AddRange(retains);
             }
         }
     }

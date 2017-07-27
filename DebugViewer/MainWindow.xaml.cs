@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Linq;
 
 namespace DebugViewer
 {
@@ -20,8 +21,6 @@ namespace DebugViewer
     /// </summary>
     public partial class MainWindow : Window, ILogWriter, IDisposable
     {
-        private bool isCatching = false;
-
         private DateTime lastScrollTime = DateTime.Now;
 
         private readonly Viewer viewerUser;
@@ -49,34 +48,54 @@ namespace DebugViewer
             this.dataGrid.LoadingRow += (s, ev) => ev.Row.Header = ev.Row.GetIndex() + 1;
             this.dataGrid.ItemsSource = this.itemSource;
 
-            this.btnStart.Click += btnStart_Click;
+            this.btnProcess.Click += btnProcess_Click;
             this.btnFilter.Click += btnFilter_Click;
 
             this.ckScroll.Click += ckScroll_Click;
+
+            this.StartDebugger();
         }
 
+        /// <summary>
+        /// 滚动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ckScroll_Click(object sender, RoutedEventArgs e)
         {
             var alternationCount = this.ckScroll.IsChecked == true ? 1 : 2;
             this.dataGrid.AlternationCount = alternationCount;
         }
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 进程选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnProcess_Click(object sender, RoutedEventArgs e)
         {
-            if (this.isCatching == false)
+            new ProcessWindow().ShowDialog();
+            var processSelected = ProcessInfo.History.Where(item => item.IsSelected);
+
+            var pids = processSelected.Select(item => item.Id);
+            this.filter.Update(pids);
+            this.logContainer.Retain(pids);
+
+            var logs = this.logContainer.Filter(this.filter);
+            this.itemSource.Clear();
+            foreach (var item in logs)
             {
-                this.Start();
-                this.isCatching = true;
-                this.btnStart.Content = "暂停";
+                this.itemSource.Add(item);
             }
-            else
-            {
-                this.isCatching = false;
-                this.btnStart.Content = "监听";
-            }
+
+            var titles = processSelected.Select(item => item.Name);
+            this.Title = titles.Any() ? string.Join(" ", titles) : this.GetType().Assembly.GetName().Name;
         }
 
-        private void Start()
+        /// <summary>
+        /// 启动调试器
+        /// </summary>
+        private void StartDebugger()
         {
             try
             {
@@ -95,12 +114,15 @@ namespace DebugViewer
             }
         }
 
+        /// <summary>
+        /// 内容过滤
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
-            var pid = 0;
-            int.TryParse(this.txtPid.Text.Trim(), out pid);
             var pattern = this.txtPattern.Text.Trim();
-            this.filter.Update(pid, pattern);
+            this.filter.Update(pattern);
 
             var logs = this.logContainer.Filter(this.filter);
             this.itemSource.Clear();
@@ -112,20 +134,12 @@ namespace DebugViewer
 
         void ILogWriter.Write(DebugLog log)
         {
-            if (this.isCatching == false)
-            {
-                return;
-            }
-
             this.logContainer.Add(log);
-
             if (this.filter.IsMatch(log) == true)
             {
                 this.AddLogToUi(log);
             }
         }
-
-
 
         private void AddLogToUi(DebugLog log)
         {

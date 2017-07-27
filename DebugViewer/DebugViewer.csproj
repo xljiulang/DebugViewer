@@ -43,6 +43,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -60,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SelectState.cs" />
     <Compile Include="DebugerExistsException.cs" />
     <Compile Include="ILogWriter.cs" />
     <Page Include="MainWindow.xaml">
@@ -71,6 +73,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogContainer.cs" />
+    <Compile Include="ProcessInfo.cs" />
+    <Compile Include="ProcessWindow.xaml.cs">
+      <DependentUpon>ProcessWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Viewer.cs" />
     <Compile Include="LogFilter.cs" />
     <Compile Include="DebugLog.cs" />
@@ -78,6 +84,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProcessWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

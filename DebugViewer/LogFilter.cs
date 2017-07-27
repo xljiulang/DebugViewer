@@ -19,7 +19,7 @@ namespace DebugViewer
         /// <summary>
         /// 获取保留的进程id
         /// </summary>
-        public int Pid { get; private set; }
+        public int[] Pids { get; private set; }
 
         /// <summary>
         /// 获取匹配的正则表达式
@@ -32,17 +32,25 @@ namespace DebugViewer
         /// </summary>
         public LogFilter()
         {
-            this.Update(0, null);
+            this.Pids = new int[0];
+            this.Update(".");
         }
 
         /// <summary>
-        /// 更新进程id与表达式
+        /// 更新进程id
         /// </summary>
-        /// <param name="pid"></param>
-        /// <param name="pattern"></param>
-        public void Update(int pid, string pattern)
+        /// <param name="pids"></param>
+        public void Update(IEnumerable<int> pids)
         {
-            this.Pid = pid;
+            this.Pids = pids.ToArray();
+        }
+
+        /// <summary>
+        /// 更新表达式
+        /// </summary>
+        /// <param name="pattern"></param>
+        public void Update(string pattern)
+        {
             this.Pattern = string.IsNullOrEmpty(pattern) ? "." : pattern;
             this.regex = new Regex(this.Pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase);
         }
@@ -58,11 +66,8 @@ namespace DebugViewer
             {
                 return false;
             }
-            if (this.Pid > 0 && this.Pid != log.Pid)
-            {
-                return false;
-            }
-            return this.regex.IsMatch(log.Message);
+
+            return this.Pids.Contains(log.Pid) && this.regex.IsMatch(log.Message);
         }
     }
 }
