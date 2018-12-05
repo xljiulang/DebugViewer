@@ -102,6 +102,12 @@
                 <DataGridTextColumn IsReadOnly="True" Header="主窗口标题" Width="*" Binding="{Binding Title}"/>
 
                 <DataGridTemplateColumn Header="选择"  Width="70" CanUserSort="True" SortDirection="Descending" SortMemberPath="IsSelected" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox Click="OperationAll_Click" >全选</CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
                             <Button Cursor="Hand" Margin="4 4 4 4" Width="34" Content="{Binding IsSelected}" Click="Operation_Click"  Tag="{Binding Id}" />

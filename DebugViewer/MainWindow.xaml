@@ -105,7 +105,8 @@
             <Button Name="btnProcess" Width="50" Height="24" Content="进程"  Focusable="False" Cursor="Hand" Margin="10 0 0 0"  />
             <Label Content="表达式：" Margin="50 0 0 0" />
             <TextBox Name="txtPattern" Width="180" Padding="0 4 0 0" />
-            <Button Name="btnFilter" Width="50" Height="24" Content="过滤"  Margin="10 0 0 0" Focusable="False" Cursor="Hand" />
+            <Button Name="btnFilter" Width="50" Height="24" Content="过滤"  Margin="10 0 0 0" Focusable="False" Cursor="Hand" Click="btnFilter_Click" />
+            <Button Name="btnClear" Width="50" Height="24" Content="清空"  Margin="10 0 0 0" Focusable="False" Cursor="Hand" Click="btnClear_Click" />
             <CheckBox x:Name="ckScroll" Content="滚动" Margin="50 5 0 0" Focusable="False" Cursor="Hand" />
         </StackPanel>
 

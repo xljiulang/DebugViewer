@@ -132,6 +132,17 @@ namespace DebugViewer
             }
         }
 
+        /// <summary>
+        /// 清空日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            this.itemSource.Clear();
+            this.logContainer.Clear();
+        }
+
         void ILogWriter.Write(DebugLog log)
         {
             this.logContainer.Add(log);

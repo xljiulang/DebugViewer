@@ -50,5 +50,20 @@ namespace DebugViewer
             var process = ProcessInfo.History.FirstOrDefault(item => item.Id == pid);
             process.IsSelected = !process.IsSelected;
         }
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OperationAll_Click(object sender, RoutedEventArgs e)
+        {
+            var bt = (CheckBox)sender;
+            var process = ProcessInfo.History;
+            for (var i = 0; i < process.Length; i++)
+            {
+                process[i].IsSelected = bt.IsChecked.Value;
+            }
+        }
     }
 }
